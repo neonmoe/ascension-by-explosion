@@ -6,7 +6,7 @@ var time = 0
 var explosions = []
 
 func _ready():
-	set_process(true)
+	set_fixed_process(true)
 
 func init(explosivity):
 	var n = 3 + round(randf() * explosivity)
@@ -16,9 +16,10 @@ func init(explosivity):
 		spawn.set_translation(get_global_transform().origin + Vector3(randf() * 3 - 1.5, randf() * 0.5, randf() * 3 - 1.5))
 		explosions.append(spawn)
 		add_child(spawn)
-	get_node("Player").play("Explosion")
 
-func _process(delta):
+func _fixed_process(delta):
+	if (time == 0):
+		get_node("Player").play("Explosion")
 	time += delta
 	if (time >= 2):
 		queue_free()
