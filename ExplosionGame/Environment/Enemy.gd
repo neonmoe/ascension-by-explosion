@@ -14,8 +14,6 @@ var flier = load("res://ExplosionGame/Environment/Flier/Flier.scn")
 
 var movement = Vector3()
 var movement_speed = 4
-var jumped = false
-var grounded = false
 var death_anim_timer = -1
 var health = 1
 var sleeping_time = 0
@@ -27,7 +25,7 @@ func _ready():
 	set_fixed_process(true)
 
 func set_position(pos):
-	get_node("Body").set_translation(pos + Vector3(0, 3, 0))
+	get_node("Body").set_translation(pos + Vector3(0, 5, 0))
 
 func add_xp(xp):
 	var points = xp
@@ -38,9 +36,9 @@ func add_xp(xp):
 	sx /= total
 	mx /= total
 	ix /= total
-	scale = 1#min(2, round(sx * points))
-	mobility = 1#min(2, round(mx * points))
-	intelligence = 0#min(2, round(ix * points))
+	scale = min(2, round(sx * points))
+	mobility = min(2, round(mx * points))
+	intelligence = min(2, round(ix * points))
 
 func construct():
 	health += scale * scale
@@ -56,11 +54,25 @@ func construct():
 	if (intelligence == 1):
 		sleeping_time = CHARGER_SLEEP_SECONDS
 		movement_speed = 20
+	for i in range(0, spawn.get_child_count()):
+		if (spawn.get_child(i) extends MeshInstance):
+			var mesh = spawn.get_child(i).get_mesh()
+			var new_mat = FixedMaterial.new()
+			if (intelligence == 0):
+				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.2, 0.9, 0.8))
+				mesh.surface_set_material(2, new_mat)
+			if (intelligence == 1):
+				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.9, 0.8, 0.2))
+				mesh.surface_set_material(3, new_mat)
+			if (intelligence == 2):
+				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.6, 0.3, 0.9))
+				mesh.surface_set_material(2, new_mat)
 	get_node("Body").add_child(spawn)
 
 func take_damage(dmg):
 	health -= dmg
 	if (health <= 0 && death_anim_timer == -1):
+		get_node("/root/WorldRoot/Player").add_xp(1 + scale + mobility + intelligence)
 		death_anim_timer = DEATH_ANIM_LENGTH_IN_SECONDS
 
 func _process(delta):
@@ -71,13 +83,6 @@ func _process(delta):
 	# Move towards player
 	movement.x = player_direction.x
 	movement.z = player_direction.z
-	if (mobility == 1):
-		# Jump
-		if (grounded && !jumped):
-			get_node("Body").apply_impulse(Vector3(), Vector3(0, 5, 0))
-			jumped = true
-		elif (!grounded):
-			jumped = false
 	if (mobility == 2):
 		# Fly
 		if (get_node("GroundBelow").is_colliding()):
@@ -94,7 +99,6 @@ func _fixed_process(delta):
 		if (death_anim_timer > 0):
 			death_anim_timer -= delta
 		elif (death_anim_timer < 0):
-			get_node("/root/WorldRoot/Player").add_xp(1 + scale + mobility + intelligence)
 			queue_free()
 		death_scale = death_anim_timer / DEATH_ANIM_LENGTH_IN_SECONDS
 	get_node("Body").set_scale(Vector3(1, 1, 1) * (scale + 1) * death_scale)
@@ -104,12 +108,9 @@ func _fixed_process(delta):
 		get_node("Body").translate(movement * delta * movement_speed)
 
 func _on_body_enter(body):
-	if (body extends StaticBody):
-		grounded = true
-
-func _on_body_exit(body):
-	if (body extends StaticBody):
-		grounded = false
+	if (body extends StaticBody && mobility == 1 && death_anim_timer == -1):
+		# Jump
+		get_node("Body").apply_impulse(Vector3(), Vector3(0, 30, 0))
 
 func _on_damage_enter(body):
 	var player = body.get_parent()

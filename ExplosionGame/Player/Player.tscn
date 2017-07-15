@@ -1,21 +1,14 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
-[ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=3]
+[ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=2]
+[ext_resource path="res://ExplosionGame/UI/Crosshair.png" type="Texture" id=3]
+[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=4]
+[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=5]
+[ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=6]
+[ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=7]
 
-[sub_resource type="DynamicFont" id=1]
-
-font/size = 72
-font/use_mipmaps = true
-font/use_filter = true
-font/font = ExtResource( 2 )
-
-[sub_resource type="Theme" id=2]
-
-default_font = SubResource( 1 )
-
-[sub_resource type="CapsuleShape" id=3]
+[sub_resource type="CapsuleShape" id=5]
 
 radius = 0.4
 height = 1.2
@@ -63,39 +56,9 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
 GRAVITY = 200
 MOUSE_BOUNDS = Rect2( 100, 100, 1080, 520 )
+FULL_HEALTH = 20
+MAX_DAMAGE = 5
 move_speed = 7.5
-
-[node name="HealthLabel" type="Label" parent="."]
-
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-theme/theme = SubResource( 2 )
-margin/left = 50.0
-margin/top = 50.0
-margin/right = 330.0
-margin/bottom = 160.0
-text = "HP: 10"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="XPLabel" type="Label" parent="."]
-
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-theme/theme = SubResource( 2 )
-margin/left = 50.0
-margin/top = 140.0
-margin/right = 330.0
-margin/bottom = 250.0
-text = "XP: 0"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
 [node name="Body" type="RigidBody" parent="."]
 
@@ -103,7 +66,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 3 )
+shapes/0/shape = SubResource( 5 )
 shapes/0/transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -129,7 +92,7 @@ damp_override/angular = -1.0
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 trigger = false
 _update_shape_index = 0
 
@@ -160,16 +123,16 @@ v_offset = 0.0
 [node name="Gun" type="Spatial" parent="Body/Camera"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39921, -0.354384, -0.24247 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39921, -0.354384, -0.475251 )
 
-[node name="Launcher" parent="Body/Camera/Gun" instance=ExtResource( 3 )]
+[node name="Launcher" parent="Body/Camera/Gun" instance=ExtResource( 2 )]
 
-transform/local = Transform( -1, -8.74228e-08, 0, -8.74228e-08, 1, -8.74228e-08, 7.64274e-15, -8.74228e-08, -1, 0, 0, 0 )
+transform/local = Transform( -1, -1.50996e-07, 0, -1.50996e-07, 1, -7.54979e-08, 2.27997e-14, -1.50996e-07, -0.5, 0.00302362, 0.0719068, 0.158821 )
 
 [node name="MuzzleFlash" type="Particles" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0214203, -0.0430105, -0.856164 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00731063, 0.0200006, -0.323098 )
 layers = 1
 geometry/visible = true
 geometry/material_override = null
@@ -236,6 +199,53 @@ phase_3/color = Color( 0, 0, 0, 1 )
 [node name="RocketLauncher" type="Spatial" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00472534, -0.0509758, -0.960467 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.322702, 0.205585, -0.960467 )
+
+[node name="Listener" type="Listener" parent="Body/Camera"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+current = true
+
+[node name="Sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( 640, 360 )
+texture = ExtResource( 3 )
+
+[node name="Health" type="Node2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( 70, 660 )
+
+[node name="Empty" type="Sprite" parent="Health"]
+
+transform/pos = Vector2( 0, -80 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Full" type="Sprite" parent="Health"]
+
+transform/pos = Vector2( 0, -80 )
+texture = ExtResource( 5 )
+centered = false
+region = true
+region_rect = Rect2( 0, 0, 340, 80 )
+
+[node name="Damage" type="Node2D" parent="."]
+
+transform/pos = Vector2( 1210, 660 )
+
+[node name="Empty" type="Sprite" parent="Damage"]
+
+transform/pos = Vector2( 0, -80 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="Full" type="Sprite" parent="Damage"]
+
+transform/pos = Vector2( 0, -80 )
+texture = ExtResource( 7 )
+centered = false
+region = true
+region_rect = Rect2( 0, 0, 40, 80 )
 
 

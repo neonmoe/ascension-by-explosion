@@ -2,34 +2,42 @@ extends Spatial
 
 export var GRAVITY = 200
 export var MOUSE_BOUNDS = Rect2(100, 100, 1080, 520)
+export var FULL_HEALTH = 20
+export var MAX_DAMAGE = 5
 export var move_speed = 7.5
 var last_mouse_pos = Vector2(-1, -1)
 var rotation = Vector3()
 var lookat = Vector3()
 var shooting = false
 var rocket = load("res://ExplosionGame/Environment/Rocket.tscn")
-var health = 10
-var xp = 0
+var health = FULL_HEALTH
+var xp = 1
+
+var fx_health_delta = 0
+var fx_damage_delta = 0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	set_process_input(true)
 	set_fixed_process(true)
+	set_process(true)
 
 func shoot():
-	print("Bang!")
 	get_node("Body/Camera/Gun/MuzzleFlash").set_emitting(true)
 	var rocket_instance = rocket.instance()
-	rocket_instance.init(get_node("Body/Camera/Gun/RocketLauncher").get_global_transform().origin, lookat)
+	rocket_instance.init(get_node("Body/Camera/Gun/RocketLauncher").get_global_transform().origin, lookat, xp)
 	get_node("../").add_child(rocket_instance)
 
 func take_damage(dmg):
 	health -= dmg
-	get_node("HealthLabel").set_text("HP: " + str(health))
+	fx_health_delta -= dmg
+	fx_damage_delta += 1 - xp
+	xp = 1
 
 func add_xp(amt):
-	xp += amt
-	get_node("XPLabel").set_text("XP: " + str(xp))
+	var new_xp = clamp(xp + amt / 10.0, 1, MAX_DAMAGE)
+	fx_damage_delta += new_xp - xp
+	xp = new_xp
 
 func _input(event):
 	if (event.type == InputEvent.MOUSE_MOTION):
@@ -49,6 +57,32 @@ func _input(event):
 		# Mouselook
 		rotation.x = clamp(rotation.x - delta_mouse.y * 0.005, -1, 1)
 		rotation.y += delta_mouse.x * 0.005
+
+func _process(delta):
+	# Update HUD
+	# Bars
+	var hp_percent = health / FULL_HEALTH
+	get_node("Health/Full").set_region_rect(Rect2(0, 0, 40 + 260 * hp_percent, 80))
+	var xp_percent = (xp - 1) / (MAX_DAMAGE - 1)
+	get_node("Damage/Full").set_region_rect(Rect2(0, 0, 40 + 260 * xp_percent, 80))
+	# Delta FX
+	var hp_delta_percent = fx_health_delta / FULL_HEALTH
+	get_node("Health").set_scale(Vector2(1, 1) * (1 + hp_delta_percent))
+	var xp_delta_percent = fx_damage_delta / (MAX_DAMAGE * 0.7)
+	get_node("Damage").set_scale(Vector2(-1, 1) * (1 + xp_delta_percent))
+	fx_health_delta = approach_zero(fx_health_delta, delta * delta * 500)
+	fx_damage_delta = approach_zero(fx_damage_delta, delta * delta * 40)
+
+func approach_zero(x, delta):
+	if (x > 0):
+		x -= delta
+		if (x < 0):
+			x = 0
+	if (x < 0):
+		x += delta
+		if (x > 0):
+			x = 0
+	return x
 
 func _fixed_process(delta):
 	# Shooting inputs
@@ -78,5 +112,5 @@ func _fixed_process(delta):
 	get_node("Body").translate(movement * delta)
 	
 	# Apply mouselook
-	lookat = Vector3(cos(rotation.y), rotation.x, sin(rotation.y))
+	lookat = Vector3(cos(rotation.y) * cos(rotation.x * PI / 2), rotation.x, sin(rotation.y) * cos(rotation.x * PI / 2))
 	get_node("Body/Camera").look_at(get_node("Body/Camera").get_camera_transform().origin + lookat, Vector3(0, 1, 0))

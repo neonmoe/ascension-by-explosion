@@ -21,7 +21,6 @@ func _process(delta):
 		while ((pos - player_pos).length() < 3):
 			pos = Vector3(10, 0, 10) * (randf() * 2 - 1) + get_global_transform().origin
 		spawn.set_position(pos)
-		print("Spawned at ", pos, "!")
 		spawned.append(spawn)
 		add_child(spawn)
 		last_spawn_time = timer

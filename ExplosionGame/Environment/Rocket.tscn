@@ -53,7 +53,7 @@ radius = 5.0
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
 flying_speed = 30
-explosion_force = 10
+explosion_force = 15
 
 [node name="RigidBody" type="RigidBody" parent="."]
 

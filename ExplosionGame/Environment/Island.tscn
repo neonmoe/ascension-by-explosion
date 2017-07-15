@@ -55,7 +55,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 [node name="StaticBody" type="StaticBody" parent="."]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 100, 0, 0, 0, 4.55517, 0, 0, 0, 100, 0, -1, 0 )
+transform/local = Transform( 150, 0, 0, 0, 4.55517, 0, 0, 0, 150, 0, -1, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
