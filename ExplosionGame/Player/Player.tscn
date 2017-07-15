@@ -2,61 +2,25 @@
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=3]
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=1]
 
 font/size = 72
 font/use_mipmaps = true
 font/use_filter = true
 font/font = ExtResource( 2 )
 
-[sub_resource type="Theme" id=5]
+[sub_resource type="Theme" id=2]
 
-default_font = SubResource( 4 )
+default_font = SubResource( 1 )
 
-[sub_resource type="CapsuleShape" id=1]
+[sub_resource type="CapsuleShape" id=3]
 
 radius = 0.4
 height = 1.2
 
-[sub_resource type="FixedMaterial" id=2]
-
-flags/visible = true
-flags/double_sided = false
-flags/invert_faces = false
-flags/unshaded = false
-flags/on_top = false
-flags/lightmap_on_uv2 = true
-flags/colarray_is_srgb = true
-params/blend_mode = 0
-params/depth_draw = 1
-params/line_width = 0.0
-fixed_flags/use_alpha = false
-fixed_flags/use_color_array = false
-fixed_flags/use_point_size = false
-fixed_flags/discard_alpha = false
-fixed_flags/use_xy_normalmap = false
-params/diffuse = Color( 1, 1, 1, 1 )
-params/specular = Color( 0, 0, 0, 1 )
-params/emission = Color( 0, 0, 0, 1 )
-params/specular_exp = 40
-params/detail_mix = 1.0
-params/normal_depth = 1
-params/shader = 0
-params/shader_param = 0.5
-params/glow = 0
-params/point_size = 1.0
-uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-textures/diffuse_tc = 0
-textures/detail_tc = 0
-textures/specular_tc = 0
-textures/emission_tc = 0
-textures/specular_exp_tc = 0
-textures/glow_tc = 0
-textures/normal_tc = 0
-textures/shade_param_tc = 0
-
-[sub_resource type="FixedMaterial" id=3]
+[sub_resource type="FixedMaterial" id=4]
 
 flags/visible = true
 flags/double_sided = false
@@ -107,7 +71,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 5 )
+theme/theme = SubResource( 2 )
 margin/left = 50.0
 margin/top = 50.0
 margin/right = 330.0
@@ -123,7 +87,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 5 )
+theme/theme = SubResource( 2 )
 margin/left = 50.0
 margin/top = 140.0
 margin/right = 330.0
@@ -139,7 +103,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -165,7 +129,7 @@ damp_override/angular = -1.0
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
 
@@ -198,29 +162,14 @@ v_offset = 0.0
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39921, -0.354384, -0.24247 )
 
-[node name="GunMesh" type="TestCube" parent="Body/Camera/Gun"]
+[node name="Launcher" parent="Body/Camera/Gun" instance=ExtResource( 3 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0.014423, 0, -0.18073 )
-layers = 1
-geometry/visible = true
-geometry/material_override = SubResource( 2 )
-geometry/cast_shadow = 0
-geometry/receive_shadows = true
-geometry/range_begin = 0.0
-geometry/range_end = 0.0
-geometry/extra_cull_margin = 0.0
-geometry/billboard = false
-geometry/billboard_y = false
-geometry/depth_scale = false
-geometry/visible_in_all_rooms = false
-geometry/use_baked_light = false
-geometry/baked_light_tex_id = 0
+transform/local = Transform( -1, -8.74228e-08, 0, -8.74228e-08, 1, -8.74228e-08, 7.64274e-15, -8.74228e-08, -1, 0, 0, 0 )
 
 [node name="MuzzleFlash" type="Particles" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0079506, 0, -0.668064 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0214203, -0.0430105, -0.856164 )
 layers = 1
 geometry/visible = true
 geometry/material_override = null
@@ -235,7 +184,7 @@ geometry/depth_scale = false
 geometry/visible_in_all_rooms = false
 geometry/use_baked_light = false
 geometry/baked_light_tex_id = 0
-material = SubResource( 3 )
+material = SubResource( 4 )
 amount = 5
 emitting = false
 visibility = AABB( -4, -4, -4, 8, 8, 8 )
@@ -287,6 +236,6 @@ phase_3/color = Color( 0, 0, 0, 1 )
 [node name="RocketLauncher" type="Spatial" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.672097 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00472534, -0.0509758, -0.960467 )
 
 

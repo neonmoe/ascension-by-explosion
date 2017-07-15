@@ -8,6 +8,10 @@ var scale = 0
 var mobility = 0
 var intelligence = 0
 
+var roller = load("res://ExplosionGame/Environment/Roller/Roller.scn")
+var jumper = load("res://ExplosionGame/Environment/Jumper/Jumper.scn")
+var flier = load("res://ExplosionGame/Environment/Flier/Flier.scn")
+
 var movement = Vector3()
 var movement_speed = 4
 var jumped = false
@@ -34,18 +38,25 @@ func add_xp(xp):
 	sx /= total
 	mx /= total
 	ix /= total
-	scale = min(2, round(sx * points))
-	mobility = min(2, round(mx * points))
-	intelligence = min(2, round(ix * points))
+	scale = 1#min(2, round(sx * points))
+	mobility = 1#min(2, round(mx * points))
+	intelligence = 0#min(2, round(ix * points))
 
 func construct():
 	health += scale * scale
 	movement_speed = 6 / (scale + 1)
+	var spawn
+	if (mobility == 0):
+		spawn = roller.instance()
+	if (mobility == 1):
+		spawn = jumper.instance()
 	if (mobility == 2):
+		spawn = flier.instance()
 		get_node("Body").set_gravity_scale(0.2)
 	if (intelligence == 1):
 		sleeping_time = CHARGER_SLEEP_SECONDS
 		movement_speed = 20
+	get_node("Body").add_child(spawn)
 
 func take_damage(dmg):
 	health -= dmg
