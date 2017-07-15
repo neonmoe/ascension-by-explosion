@@ -2,7 +2,7 @@
 
 [ext_resource path="res://ExplosionGame/Environment/Rocket.gd" type="Script" id=1]
 
-[sub_resource type="CapsuleShape" id=4]
+[sub_resource type="CapsuleShape" id=1]
 
 radius = 0.117196
 height = 0.532381
@@ -44,16 +44,16 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
-[sub_resource type="SphereShape" id=6]
+[sub_resource type="SphereShape" id=3]
 
-radius = 40.0
+radius = 5.0
 
 [node name="Rocket" type="Spatial"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
 flying_speed = 30
-explosion_force = 300
+explosion_force = 10
 
 [node name="RigidBody" type="RigidBody" parent="."]
 
@@ -61,7 +61,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 4 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -86,7 +86,7 @@ damp_override/angular = -1.0
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
@@ -115,7 +115,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = false
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 6 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shapes/0/trigger = false
 space_override = 0
@@ -134,7 +134,7 @@ collision/mask = 2
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody/ExplosionArea"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-shape = SubResource( 6 )
+shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
 

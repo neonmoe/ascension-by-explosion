@@ -6,8 +6,8 @@
 [sub_resource type="Environment" id=1]
 
 ambient_light/enabled = true
-ambient_light/color = Color( 0.275146, 0.359375, 0.359375, 1 )
-ambient_light/energy = 1.0
+ambient_light/color = Color( 0.320587, 0.429688, 0.429688, 1 )
+ambient_light/energy = 4.0
 fxaa/enabled = true
 background/mode = 2
 background/color = Color( 0.703125, 0.96521, 1, 1 )
@@ -20,7 +20,7 @@ glow/blur_passes = 1
 glow/blur_scale = 1
 glow/blur_strength = 1
 glow/blur_blend_mode = null
-glow/bloom = 0.1
+glow/bloom = 0.05
 glow/bloom_treshold = 1.0
 dof_blur/enabled = false
 dof_blur/blur_passes = 1

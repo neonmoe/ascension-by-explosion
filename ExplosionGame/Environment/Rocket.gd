@@ -14,17 +14,18 @@ func init(pos, forward):
 
 func _fixed_process(delta):
 	var bodies = get_node("RigidBody").get_colliding_bodies()
-	if (bodies.size() > 0):
+	if (bodies.size() > 0 && bodies[0].get_path().get_name(bodies[0].get_path().get_name_count() - 2) != "Player"):
 		var body = bodies[0]
 		print("Bonk! (", body.get_path(), ")")
-		print("Explodables: ", explodables)
 		for explodable_body in explodables:
+			var parent = explodable_body.get_parent()
+			if (parent.get_name().find("Enemy") != -1):
+				parent.take_damage(1)
+				print("Bonked: ", parent.get_name())
 			var direction = explodable_body.get_global_transform().origin - get_node("RigidBody").get_global_transform().origin
 			var distance = direction.length()
 			explodable_body.apply_impulse(Vector3(), direction.normalized() * explosion_force / clamp(distance * distance / 30, 1, 100))
-			print("Distance: ", distance)
 		queue_free()
-
 
 func _on_explosion_body_enter(body):
 	if (body extends RigidBody):

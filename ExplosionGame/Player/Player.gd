@@ -3,12 +3,13 @@ extends Spatial
 export var GRAVITY = 200
 export var MOUSE_BOUNDS = Rect2(100, 100, 1080, 520)
 export var move_speed = 7.5
-var y_movement = 0
 var last_mouse_pos = Vector2(-1, -1)
 var rotation = Vector3()
 var lookat = Vector3()
 var shooting = false
 var rocket = load("res://ExplosionGame/Environment/Rocket.tscn")
+var health = 10
+var xp = 0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -21,6 +22,14 @@ func shoot():
 	var rocket_instance = rocket.instance()
 	rocket_instance.init(get_node("Body/Camera/Gun/RocketLauncher").get_global_transform().origin, lookat)
 	get_node("../").add_child(rocket_instance)
+
+func take_damage(dmg):
+	health -= dmg
+	get_node("HealthLabel").set_text("HP: " + str(health))
+
+func add_xp(amt):
+	xp += amt
+	get_node("XPLabel").set_text("XP: " + str(xp))
 
 func _input(event):
 	if (event.type == InputEvent.MOUSE_MOTION):
@@ -61,17 +70,12 @@ func _fixed_process(delta):
 	if (Input.is_action_pressed("move_right")):
 		movement.x += 1
 	if (grounded):
-		y_movement = 0
 		if (Input.is_action_pressed("jump")):
-			y_movement = 20
-	else:
-		y_movement -= GRAVITY * delta
+			get_node("Body").apply_impulse(Vector3(), Vector3(0, 10, 0))
 	# Transform the direction to be relative to the camera + normalize + apply movement speed
 	movement = get_node("Body/Camera").get_transform().basis.xform(movement).normalized() * move_speed
-	# Apply gravity/jumping
-	movement.y = y_movement
 	# Move the character
-	get_node("Body").move(movement * delta)
+	get_node("Body").translate(movement * delta)
 	
 	# Apply mouselook
 	lookat = Vector3(cos(rotation.y), rotation.x, sin(rotation.y))

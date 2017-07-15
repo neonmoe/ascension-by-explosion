@@ -1,13 +1,25 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=4]
+
+font/size = 72
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 2 )
+
+[sub_resource type="Theme" id=5]
+
+default_font = SubResource( 4 )
 
 [sub_resource type="CapsuleShape" id=1]
 
 radius = 0.4
 height = 1.2
 
-[sub_resource type="FixedMaterial" id=3]
+[sub_resource type="FixedMaterial" id=2]
 
 flags/visible = true
 flags/double_sided = false
@@ -44,7 +56,7 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
-[sub_resource type="FixedMaterial" id=2]
+[sub_resource type="FixedMaterial" id=3]
 
 flags/visible = true
 flags/double_sided = false
@@ -89,7 +101,39 @@ GRAVITY = 200
 MOUSE_BOUNDS = Rect2( 100, 100, 1080, 520 )
 move_speed = 7.5
 
-[node name="Body" type="KinematicBody" parent="."]
+[node name="HealthLabel" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 5 )
+margin/left = 50.0
+margin/top = 50.0
+margin/right = 330.0
+margin/bottom = 160.0
+text = "HP: 10"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="XPLabel" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 5 )
+margin/left = 50.0
+margin/top = 140.0
+margin/right = 330.0
+margin/bottom = 250.0
+text = "XP: 0"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Body" type="RigidBody" parent="."]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
@@ -100,11 +144,22 @@ shapes/0/transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
-collide_with/static = true
-collide_with/kinematic = true
-collide_with/rigid = true
-collide_with/character = true
-collision/margin = 0.001
+mode = 2
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 2.0
+custom_integrator = false
+continuous_cd = true
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+axis_lock = 0
+velocity/linear = Vector3( 0, 0, 0 )
+velocity/angular = Vector3( 0, 0, 0 )
+damp_override/linear = -1.0
+damp_override/angular = -1.0
 
 [node name="CollisionShape" type="CollisionShape" parent="Body"]
 
@@ -114,6 +169,15 @@ shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
+[node name="Grounded" type="RayCast" parent="Body"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+enabled = true
+cast_to = Vector3( 0, -0.1, 0 )
+layer_mask = 1
+type_mask = 1
+
 [node name="Camera" type="Camera" parent="Body"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
@@ -121,7 +185,7 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )
 projection = 0
 fov = 90.0
 near = 0.05
-far = 100.0
+far = 500.0
 keep_aspect = 1
 current = true
 visible_layers = 1048575
@@ -140,8 +204,8 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0.014423, 0, -0.18073 )
 layers = 1
 geometry/visible = true
-geometry/material_override = SubResource( 3 )
-geometry/cast_shadow = 1
+geometry/material_override = SubResource( 2 )
+geometry/cast_shadow = 0
 geometry/receive_shadows = true
 geometry/range_begin = 0.0
 geometry/range_end = 0.0
@@ -171,7 +235,7 @@ geometry/depth_scale = false
 geometry/visible_in_all_rooms = false
 geometry/use_baked_light = false
 geometry/baked_light_tex_id = 0
-material = SubResource( 2 )
+material = SubResource( 3 )
 amount = 5
 emitting = false
 visibility = AABB( -4, -4, -4, 8, 8, 8 )
@@ -224,14 +288,5 @@ phase_3/color = Color( 0, 0, 0, 1 )
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.672097 )
-
-[node name="Grounded" type="RayCast" parent="Body"]
-
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-enabled = true
-cast_to = Vector3( 0, -0.1, 0 )
-layer_mask = 1
-type_mask = 1
 
 
