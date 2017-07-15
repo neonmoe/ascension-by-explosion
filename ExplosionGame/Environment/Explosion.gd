@@ -16,10 +16,9 @@ func init(explosivity):
 		spawn.set_translation(get_global_transform().origin + Vector3(randf() * 3 - 1.5, randf() * 0.5, randf() * 3 - 1.5))
 		explosions.append(spawn)
 		add_child(spawn)
-	get_node("SpatialSamplePlayer").play("Explosion", 0)
+	get_node("Player").play("Explosion")
 
 func _process(delta):
-	print("Sound playing: ", get_node("SpatialSamplePlayer").is_voice_active(0))
 	time += delta
 	if (time >= 2):
 		queue_free()

@@ -1,19 +1,18 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=2]
-[ext_resource path="res://ExplosionGame/UI/Crosshair.png" type="Texture" id=3]
-[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=4]
-[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=5]
-[ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=6]
-[ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=7]
+[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=3]
+[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=4]
+[ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=5]
+[ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=6]
 
-[sub_resource type="CapsuleShape" id=5]
+[sub_resource type="CapsuleShape" id=1]
 
 radius = 0.4
 height = 1.2
 
-[sub_resource type="FixedMaterial" id=4]
+[sub_resource type="FixedMaterial" id=2]
 
 flags/visible = true
 flags/double_sided = false
@@ -66,7 +65,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 5 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -92,7 +91,7 @@ damp_override/angular = -1.0
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
@@ -147,7 +146,7 @@ geometry/depth_scale = false
 geometry/visible_in_all_rooms = false
 geometry/use_baked_light = false
 geometry/baked_light_tex_id = 0
-material = SubResource( 4 )
+material = SubResource( 2 )
 amount = 5
 emitting = false
 visibility = AABB( -4, -4, -4, 8, 8, 8 )
@@ -201,16 +200,6 @@ phase_3/color = Color( 0, 0, 0, 1 )
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.322702, 0.205585, -0.960467 )
 
-[node name="Listener" type="Listener" parent="Body/Camera"]
-
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-current = true
-
-[node name="Sprite" type="Sprite" parent="."]
-
-transform/pos = Vector2( 640, 360 )
-texture = ExtResource( 3 )
-
 [node name="Health" type="Node2D" parent="."]
 
 editor/display_folded = true
@@ -219,13 +208,13 @@ transform/pos = Vector2( 70, 660 )
 [node name="Empty" type="Sprite" parent="Health"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 centered = false
 
 [node name="Full" type="Sprite" parent="Health"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 centered = false
 region = true
 region_rect = Rect2( 0, 0, 340, 80 )
@@ -233,17 +222,18 @@ region_rect = Rect2( 0, 0, 340, 80 )
 [node name="Damage" type="Node2D" parent="."]
 
 transform/pos = Vector2( 1210, 660 )
+transform/scale = Vector2( -1, 1 )
 
 [node name="Empty" type="Sprite" parent="Damage"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 centered = false
 
 [node name="Full" type="Sprite" parent="Damage"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 7 )
+texture = ExtResource( 6 )
 centered = false
 region = true
 region_rect = Rect2( 0, 0, 40, 80 )
