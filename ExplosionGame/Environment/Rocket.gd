@@ -27,8 +27,8 @@ func _fixed_process(delta):
 			var distance = direction.length()
 			explodable_body.apply_impulse(Vector3(), direction.normalized() * explosion_force / clamp(distance * distance / 30, 1, 100))
 		var smoke = explosion.instance()
-		get_node("../").add_child(smoke)
 		smoke.set_translation(get_node("RigidBody").get_global_transform().origin)
+		get_node("../").add_child(smoke)
 		smoke.init(damage)
 		queue_free()
 

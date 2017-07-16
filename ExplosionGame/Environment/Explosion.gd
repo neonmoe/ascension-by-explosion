@@ -12,10 +12,10 @@ func init(explosivity):
 	var n = 3 + round(randf() * explosivity)
 	for i in range(0, n):
 		var spawn = explosion.instance()
-		spawn.set_scale(Vector3(0.8 + randf() * 0.4, 0.8 + randf() * 0.4, 0.8 + randf() * 0.4))
-		spawn.set_translation(get_global_transform().origin + Vector3(randf() * 3 - 1.5, randf() * 0.5, randf() * 3 - 1.5))
-		explosions.append(spawn)
 		add_child(spawn)
+		spawn.set_scale(Vector3(0.8 + randf() * 0.4, 0.8 + randf() * 0.4, 0.8 + randf() * 0.4))
+		spawn.set_translation(Vector3(randf() * 3 - 1.5, randf() * 0.5, randf() * 3 - 1.5))
+		explosions.append(spawn)
 
 func _fixed_process(delta):
 	if (time == 0):

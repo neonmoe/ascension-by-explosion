@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://ExplosionGame/Environment/Island.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/Environment/Grass/Grass.scn" type="PackedScene" id=2]
 [ext_resource path="res://ExplosionGame/Environment/Spawner.gd" type="Script" id=3]
 [ext_resource path="res://ExplosionGame/Environment/SpawnGate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="FixedMaterial" id=2]
 
@@ -54,6 +55,17 @@ margin = Rect2( 0, 0, 0, 0 )
 [sub_resource type="BoxShape" id=4]
 
 extents = Vector3( 10000, 20, 10000 )
+
+[sub_resource type="DynamicFont" id=5]
+
+font/size = 36
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 5 )
+
+[sub_resource type="Theme" id=6]
+
+default_font = SubResource( 5 )
 
 [node name="Island" type="Spatial"]
 
@@ -248,6 +260,7 @@ script/script = ExtResource( 3 )
 [node name="SpawnGate" parent="." instance=ExtResource( 4 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12 )
+OPEN_ANIMATION_TIME = 0.75
 
 [node name="Area" type="Area" parent="."]
 
@@ -278,6 +291,27 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 4 )
 trigger = false
 _update_shape_index = 0
+
+[node name="WaveStartLabel" type="Label" parent="."]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 6 )
+margin/left = 250.0
+margin/top = 80.0
+margin/right = -240.0
+margin/bottom = 32.0
+text = "Wave starting in 5..."
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [connection signal="body_enter" from="Area" to="." method="_on_falling_body_enter"]
 

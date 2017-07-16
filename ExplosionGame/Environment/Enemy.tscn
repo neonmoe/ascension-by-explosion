@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://ExplosionGame/Environment/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://ExplosionGame/Environment/Flier/Flap.wav" type="Sample" id=2]
-[ext_resource path="res://ExplosionGame/FX/Pickups/Hurt.wav" type="Sample" id=3]
-[ext_resource path="res://ExplosionGame/Environment/Jumper/Jump.wav" type="Sample" id=4]
+[ext_resource path="res://ExplosionGame/FX/Pickups/EnemyDead.wav" type="Sample" id=2]
+[ext_resource path="res://ExplosionGame/FX/Pickups/EnemyHurt.wav" type="Sample" id=3]
+[ext_resource path="res://ExplosionGame/Environment/Flier/Flap.wav" type="Sample" id=4]
+[ext_resource path="res://ExplosionGame/FX/Pickups/Hurt.wav" type="Sample" id=5]
+[ext_resource path="res://ExplosionGame/Environment/Jumper/Jump.wav" type="Sample" id=6]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -19,23 +21,35 @@ radius = 1.19327
 
 [sub_resource type="SampleLibrary" id=4]
 
-samples/Flap = {
+samples/EnemyDead = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 2 )
 }
-samples/Hurt = {
+samples/EnemyHurt = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 3 )
 }
-samples/Jump = {
+samples/Flap = {
 "db": 0.0,
 "pitch": 1.0,
 "priority": 0,
 "sample": ExtResource( 4 )
+}
+samples/Hurt = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 5 )
+}
+samples/Jump = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 6 )
 }
 
 [node name="Enemy" type="Spatial"]
@@ -161,8 +175,6 @@ layer_mask = 1
 type_mask = 1
 
 [connection signal="body_enter" from="Body/Area" to="." method="_on_body_enter"]
-
-[connection signal="body_exit" from="Body/Area" to="." method="_on_body_exit"]
 
 [connection signal="body_enter" from="Body/DamageArea" to="." method="_on_damage_enter"]
 

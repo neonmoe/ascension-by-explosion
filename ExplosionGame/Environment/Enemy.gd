@@ -22,26 +22,16 @@ var sleeping_time = 0
 var sound_cooldown = 0
 
 func _ready():
-	add_xp(randf() * randf() * 10)
-	construct()
 	set_process(true)
 	set_fixed_process(true)
 
 func set_position(pos):
 	get_node("Body").set_translation(pos + Vector3(0, 5, 0))
 
-func add_xp(xp):
-	var points = xp
-	var sx = randf()
-	var mx = randf()
-	var ix = randf()
-	var total = sx + mx + ix
-	sx /= total
-	mx /= total
-	ix /= total
-	scale = min(2, round(sx * points))
-	mobility = min(2, round(mx * points))
-	intelligence = min(2, round(ix * points))
+func add_xp(sx, mx, ix):
+	scale = min(2, round(sx * randf()))
+	mobility = min(2, round(mx * randf()))
+	intelligence = min(2, round(ix * randf()))
 
 func construct():
 	health += scale * scale
@@ -78,6 +68,10 @@ func take_damage(dmg):
 	if (health <= 0 && death_anim_timer == -1):
 		die()
 		death_anim_timer = DEATH_ANIM_LENGTH_IN_SECONDS
+		print("dead!")
+		get_node("Body/Player").play("EnemyDead")
+	else:
+		get_node("Body/Player").play("EnemyHurt")
 
 func die():
 	var pos = get_node("Body").get_global_transform().origin
