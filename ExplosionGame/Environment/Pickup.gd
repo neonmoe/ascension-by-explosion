@@ -6,10 +6,6 @@ export var DAMAGE_PER_POINT = 1
 var health
 var damage
 
-func _ready():
-	init(1, 1)
-	pass
-
 func init(hp, dmg):
 	var vel = 50
 	get_node("Body").apply_impulse(Vector3(), Vector3(vel * 0.2 * (randf() * 2 - 1), 

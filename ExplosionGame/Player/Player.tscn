@@ -1,11 +1,12 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=2]
-[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=3]
-[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=4]
-[ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=5]
-[ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=6]
+[ext_resource path="res://ExplosionGame/Player/Launcher/Shoot.wav" type="Sample" id=3]
+[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=4]
+[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=5]
+[ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=6]
+[ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=7]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -49,6 +50,15 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
+[sub_resource type="SampleLibrary" id=3]
+
+samples/Shoot = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 3 )
+}
+
 [node name="Player" type="Spatial"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
@@ -74,7 +84,7 @@ mode = 2
 mass = 1.0
 friction = 1.0
 bounce = 0.0
-gravity_scale = 2.0
+gravity_scale = 1.0
 custom_integrator = false
 continuous_cd = true
 contacts_reported = 0
@@ -109,7 +119,7 @@ type_mask = 1
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )
 projection = 0
-fov = 90.0
+fov = 100.0
 near = 0.05
 far = 500.0
 keep_aspect = 1
@@ -131,7 +141,7 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0 )
 [node name="MuzzleFlash" type="Particles" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00731063, 0.0200006, -0.323098 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0311148, -0.0285498, 0.436811 )
 layers = 1
 geometry/visible = true
 geometry/material_override = null
@@ -198,7 +208,21 @@ phase_3/color = Color( 0, 0, 0, 1 )
 [node name="RocketLauncher" type="Spatial" parent="Body/Camera/Gun"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.322702, 0.205585, -0.960467 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.290452, -0.0188974, 0.720124 )
+
+[node name="LauncherSound" type="SpatialSamplePlayer" parent="Body/Camera/Gun"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.302934, 0, 0.708043 )
+params/volume_db = 0.0
+params/pitch_scale = 1.0
+params/attenuation/min_distance = 1.0
+params/attenuation/max_distance = 100.0
+params/attenuation/distance_exp = 1.0
+params/emission_cone/degrees = 180.0
+params/emission_cone/attenuation_db = -6.0
+config/polyphony = 1
+config/samples = SubResource( 3 )
 
 [node name="Health" type="Node2D" parent="."]
 
@@ -208,13 +232,13 @@ transform/pos = Vector2( 70, 660 )
 [node name="Empty" type="Sprite" parent="Health"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 centered = false
 
 [node name="Full" type="Sprite" parent="Health"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 centered = false
 region = true
 region_rect = Rect2( 0, 0, 340, 80 )
@@ -227,13 +251,13 @@ transform/scale = Vector2( -1, 1 )
 [node name="Empty" type="Sprite" parent="Damage"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 centered = false
 
 [node name="Full" type="Sprite" parent="Damage"]
 
 transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 centered = false
 region = true
 region_rect = Rect2( 0, 0, 40, 80 )

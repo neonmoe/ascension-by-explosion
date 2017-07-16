@@ -17,8 +17,8 @@ func init(pos, forward, dmg):
 
 func _fixed_process(delta):
 	var bodies = get_node("RigidBody").get_colliding_bodies()
-	if (bodies.size() > 0 && bodies[0].get_path().get_name(bodies[0].get_path().get_name_count() - 2) != "Player"):
-		var body = bodies[0]
+	if ((bodies.size() > 0 && bodies[0].get_path().get_name(bodies[0].get_path().get_name_count() - 2) != "Player") ||
+		Input.is_action_pressed("detonate")):
 		for explodable_body in explodables:
 			var parent = explodable_body.get_parent()
 			if (parent.get_name().find("Enemy") != -1):

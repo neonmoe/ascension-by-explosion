@@ -12,6 +12,7 @@ var shooting = false
 var rocket = load("res://ExplosionGame/Environment/Rocket.tscn")
 var health = FULL_HEALTH
 var xp = 1
+var shoot_anim = 0
 
 var fx_health_delta = 0
 var fx_damage_delta = 0
@@ -26,15 +27,22 @@ func shoot():
 	get_node("Body/Camera/Gun/MuzzleFlash").set_emitting(true)
 	var rocket_instance = rocket.instance()
 	rocket_instance.init(get_node("Body/Camera/Gun/RocketLauncher").get_global_transform().origin, lookat, xp)
+	var looking_down = lookat.dot(Vector3(0, -1, 0)) > 0.5
+	if (!get_node("Body/Grounded").is_colliding() && looking_down): 
+		get_node("Body").apply_impulse(Vector3(), lookat * -1 * 10)
 	get_node("../").add_child(rocket_instance)
+	shoot_anim = 1
+	get_node("Body/Camera/Gun/LauncherSound").play("Shoot")
 
 func heal(dmg):
-	health += dmg
-	fx_health_delta += dmg
+	var new_health = clamp(health + dmg, 0, FULL_HEALTH)
+	fx_health_delta += new_health - health
+	health = new_health
 
 func take_damage(dmg):
-	health -= dmg
-	fx_health_delta -= dmg
+	var new_health = clamp(health - dmg, 0, FULL_HEALTH)
+	fx_health_delta += new_health - health
+	health = new_health
 	fx_damage_delta += 1 - xp
 	xp = 1
 
@@ -96,6 +104,11 @@ func _fixed_process(delta):
 	elif (!Input.is_action_pressed("shoot")):
 		shooting = false
 	
+	# Animate gun
+	shoot_anim = approach_zero(shoot_anim, delta * 2)
+	get_node("Body/Camera/Gun/Launcher").set_rotation_deg(Vector3(-shoot_anim * 30, 0, 0))
+	get_node("Body/Camera/Gun/Launcher").set_translation(Vector3(0, 0, -shoot_anim * 0.2))
+	
 	# Movement inputs
 	var movement = Vector3()
 	var grounded = get_node("Body/Grounded").is_colliding()
@@ -109,7 +122,7 @@ func _fixed_process(delta):
 		movement.x += 1
 	if (grounded):
 		if (Input.is_action_pressed("jump")):
-			get_node("Body").apply_impulse(Vector3(), Vector3(0, 10, 0))
+			get_node("Body").apply_impulse(Vector3(), Vector3(0, 7, 0))
 	# Transform the direction to be relative to the camera + normalize + apply movement speed
 	movement = get_node("Body/Camera").get_transform().basis.xform(movement).normalized() * move_speed
 	# Move the character

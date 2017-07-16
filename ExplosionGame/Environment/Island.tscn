@@ -43,7 +43,7 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=4]
 
 region = Rect2( 0, 0, 0, 0 )
 margin = Rect2( 0, 0, 0, 0 )
@@ -103,7 +103,7 @@ transform/local = Transform( 0.448416, -0.724555, -0.523396, 0.750203, -0.013250
 layers = 1
 params/enabled = true
 params/editor_only = false
-params/bake_mode = 0
+params/bake_mode = 3
 params/energy = 2.0
 colors/diffuse = Color( 1, 1, 1, 1 )
 colors/specular = Color( 1, 1, 1, 1 )
@@ -112,11 +112,11 @@ shadow/darkening = 0.0
 shadow/z_offset = 0.05
 shadow/z_slope_scale = 0.0
 shadow/esm_multiplier = 60.0
-shadow/blur_passes = 1.0
-projector = SubResource( 3 )
+shadow/blur_passes = 2.0
+projector = SubResource( 4 )
 operator = 0
 shadow/mode = 3
-shadow/max_distance = 40.0
+shadow/max_distance = 150.0
 shadow/split_weight = 0.5
 shadow/zoffset_scale = 2.0
 
