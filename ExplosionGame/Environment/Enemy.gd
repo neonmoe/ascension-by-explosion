@@ -12,11 +12,14 @@ var roller = load("res://ExplosionGame/Environment/Roller/Roller.scn")
 var jumper = load("res://ExplosionGame/Environment/Jumper/Jumper.scn")
 var flier = load("res://ExplosionGame/Environment/Flier/Flier.scn")
 
+var pickup = load("res://ExplosionGame/Environment/Pickup.tscn")
+
 var movement = Vector3()
 var movement_speed = 4
 var death_anim_timer = -1
 var health = 1
 var sleeping_time = 0
+var sound_cooldown = 0
 
 func _ready():
 	add_xp(randf() * randf() * 10)
@@ -62,7 +65,7 @@ func construct():
 				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.2, 0.9, 0.8))
 				mesh.surface_set_material(2, new_mat)
 			if (intelligence == 1):
-				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.9, 0.8, 0.2))
+				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.9, 0.3, 0.2))
 				mesh.surface_set_material(3, new_mat)
 			if (intelligence == 2):
 				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.6, 0.3, 0.9))
@@ -72,8 +75,24 @@ func construct():
 func take_damage(dmg):
 	health -= dmg
 	if (health <= 0 && death_anim_timer == -1):
-		get_node("/root/WorldRoot/Player").add_xp(1 + scale + mobility + intelligence)
+		die()
 		death_anim_timer = DEATH_ANIM_LENGTH_IN_SECONDS
+
+func die():
+	get_node("/root/WorldRoot/Player").add_xp((1 + scale + mobility + intelligence) / 10.0)
+	var pos = get_node("Body").get_global_transform().origin
+	for i in range(0, intelligence * 3):
+		drop_pickup(pos, 1, 1)
+	for i in range(0, mobility * 3):
+		drop_pickup(pos, 0, 1)
+	for i in range(0, scale * 3):
+		drop_pickup(pos, 1, 0)
+
+func drop_pickup(pos, hp, dmg):
+	var spawn = pickup.instance()
+	spawn.set_translation(pos)
+	spawn.init(hp, dmg)
+	get_node("/root/WorldRoot").add_child(spawn)
 
 func _process(delta):
 	var player = get_node("/root/WorldRoot/Player/Body")
@@ -92,6 +111,13 @@ func _process(delta):
 		var dot = player_direction.dot(player_look_direction)
 		if (dot < 0.2):
 			movement *= -1
+	
+	# Make noise
+	sound_cooldown -= delta
+	if (sound_cooldown <= 0):
+		sound_cooldown = 0.3 + randf()
+		if (mobility == 2):
+			get_node("Body/Player").play("Flap")
 
 func _fixed_process(delta):
 	var death_scale = 1
@@ -111,6 +137,7 @@ func _on_body_enter(body):
 	if (body extends StaticBody && mobility == 1 && death_anim_timer == -1):
 		# Jump
 		get_node("Body").apply_impulse(Vector3(), Vector3(0, 30, 0))
+		get_node("Body/Player").play("Jump")
 
 func _on_damage_enter(body):
 	var player = body.get_parent()

@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://ExplosionGame/Environment/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://ExplosionGame/Environment/Flier/Flap.wav" type="Sample" id=2]
+[ext_resource path="res://ExplosionGame/Environment/Jumper/Jump.wav" type="Sample" id=3]
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="BoxShape" id=1]
 
 extents = Vector3( 0.6, 0.6, 0.6 )
 
@@ -13,6 +15,21 @@ extents = Vector3( 0.74804, 0.794316, 0.673652 )
 [sub_resource type="SphereShape" id=3]
 
 radius = 1.19327
+
+[sub_resource type="SampleLibrary" id=4]
+
+samples/Flap = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 2 )
+}
+samples/Jump = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 3 )
+}
 
 [node name="Enemy" type="Spatial"]
 
@@ -27,7 +44,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 input/ray_pickable = true
 input/capture_on_drag = false
 shape_count = 1
-shapes/0/shape = SubResource( 4 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 3
@@ -110,9 +127,22 @@ _update_shape_index = 0
 [node name="CollisionShape" type="CollisionShape" parent="Body"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
+
+[node name="Player" type="SpatialSamplePlayer" parent="Body"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+params/volume_db = 0.0
+params/pitch_scale = 1.0
+params/attenuation/min_distance = 1.0
+params/attenuation/max_distance = 100.0
+params/attenuation/distance_exp = 1.0
+params/emission_cone/degrees = 180.0
+params/emission_cone/attenuation_db = -6.0
+config/polyphony = 1
+config/samples = SubResource( 4 )
 
 [node name="GroundBelow" type="RayCast" parent="."]
 

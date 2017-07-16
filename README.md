@@ -8,5 +8,7 @@ Credits
 External assets from the internet.
 - [Roboto Slab font by Christian Robertson](https://fonts.google.com/specimen/Roboto+Slab)
 - [Explosion sound by Benboncan](http://freesound.org/people/Benboncan/sounds/73005/)
+- [Wing flap sound by AgentDD](http://freesound.org/people/AgentDD/sounds/246224/)
+- [Jump sound by plingativator](http://freesound.org/people/plingativator/sounds/188869/)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>

@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://ExplosionGame/Environment/Pickup.gd" type="Script" id=1]
+[ext_resource path="res://ExplosionGame/FX/Explosion/Explosion.scn" type="PackedScene" id=2]
+
+[sub_resource type="SphereShape" id=1]
+
+radius = 0.396729
+
+[sub_resource type="SphereShape" id=2]
+
+radius = 0.501457
+
+[node name="Pickup" type="Spatial"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 1 )
+HEALTH_PER_POINT = 5
+DAMAGE_PER_POINT = 1
+
+[node name="Body" type="RigidBody" parent="."]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+mode = 0
+mass = 1.0
+friction = 0.1
+bounce = 0.4
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = false
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+axis_lock = 0
+velocity/linear = Vector3( 0, 0, 0 )
+velocity/angular = Vector3( 0, 0, 0 )
+damp_override/linear = -1.0
+damp_override/angular = -1.0
+
+[node name="Mesh" parent="Body" instance=ExtResource( 2 )]
+
+transform/local = Transform( 0.399109, 0, 0, 0, 0.399109, 0, 0, 0, 0.399109, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Body"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Area" type="Area" parent="Body"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = false
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Transform( 1.45054, 0, 0, 0, 1.45054, 0, 0, 0, 1.45054, 0, 0, 0 )
+shapes/0/trigger = true
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision/layers = 1
+collision/mask = 1
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Area"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1.45054, 0, 0, 0, 1.45054, 0, 0, 0, 1.45054, 0, 0, 0 )
+shape = SubResource( 2 )
+trigger = true
+_update_shape_index = 0
+
+[connection signal="body_enter" from="Body/Area" to="." method="_on_body_enter"]
+
+

@@ -28,6 +28,10 @@ func shoot():
 	rocket_instance.init(get_node("Body/Camera/Gun/RocketLauncher").get_global_transform().origin, lookat, xp)
 	get_node("../").add_child(rocket_instance)
 
+func heal(dmg):
+	health += dmg
+	fx_health_delta += dmg
+
 func take_damage(dmg):
 	health -= dmg
 	fx_health_delta -= dmg
@@ -35,7 +39,7 @@ func take_damage(dmg):
 	xp = 1
 
 func add_xp(amt):
-	var new_xp = clamp(xp + amt / 10.0, 1, MAX_DAMAGE)
+	var new_xp = clamp(xp + amt, 1, MAX_DAMAGE)
 	fx_damage_delta += new_xp - xp
 	xp = new_xp
 
