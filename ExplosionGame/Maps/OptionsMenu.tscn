@@ -2,7 +2,7 @@
 
 [ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=1]
 
-[sub_resource type="GDScript" id=8]
+[sub_resource type="GDScript" id=1]
 
 script/source = "extends Node2D
 
@@ -18,13 +18,13 @@ func _ready():
 	get_node(\"Resolutions\").select(Globals.get(\"resolution\"))
 	
 	get_node(\"Fullscreens\").add_item(\"Windowed\")
-	get_node(\"Fullscreens\").add_item(\"\\\"Fullscreen\\\"\")
+	get_node(\"Fullscreens\").add_item(\"Maximised\")
 	get_node(\"Fullscreens\").select(Globals.get(\"fullscreenmode\"))
 	if (Globals.get(\"fullscreenmode\") == 1):
 		get_node(\"Resolutions\").set_disabled(true)
 	
 	get_node(\"FoV\").set_value(Globals.get(\"fov\"))
-	get_node(\"LabelFoV\").set_text(str(Globals.get(\"fov\")))
+	get_node(\"LabelFoVValue\").set_text(str(Globals.get(\"fov\")))
 	get_node(\"MSX\").set_value(Globals.get(\"msx\"))
 	get_node(\"LabelMSXValue\").set_text(str(Globals.get(\"msx\")))
 	get_node(\"MSY\").set_value(Globals.get(\"msy\"))
@@ -88,53 +88,53 @@ font/font = ExtResource( 1 )
 
 default_font = SubResource( 4 )
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=6]
 
 font/size = 40
 font/use_mipmaps = true
 font/use_filter = true
 font/font = ExtResource( 1 )
 
-[sub_resource type="Theme" id=12]
+[sub_resource type="Theme" id=7]
 
-default_font = SubResource( 11 )
+default_font = SubResource( 6 )
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=8]
 
 font/size = 32
 font/use_mipmaps = true
 font/use_filter = true
 font/font = ExtResource( 1 )
 
-[sub_resource type="Theme" id=16]
+[sub_resource type="Theme" id=9]
 
-default_font = SubResource( 15 )
+default_font = SubResource( 8 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=10]
 
 font/size = 56
 font/use_mipmaps = true
 font/use_filter = true
 font/font = ExtResource( 1 )
 
-[sub_resource type="Theme" id=10]
+[sub_resource type="Theme" id=11]
 
-default_font = SubResource( 9 )
+default_font = SubResource( 10 )
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=12]
 
 font/size = 28
 font/use_mipmaps = true
 font/use_filter = true
 font/font = ExtResource( 1 )
 
-[sub_resource type="Theme" id=14]
+[sub_resource type="Theme" id=13]
 
-default_font = SubResource( 13 )
+default_font = SubResource( 12 )
 
 [node name="OptionsMenu" type="Node2D"]
 
-script/script = SubResource( 8 )
+script/script = SubResource( 1 )
 
 [node name="Title" type="Label" parent="."]
 
@@ -174,7 +174,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 12 )
+theme/theme = SubResource( 7 )
 margin/left = 70.0
 margin/top = 220.0
 margin/right = 290.0
@@ -190,12 +190,12 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 12 )
+theme/theme = SubResource( 7 )
 margin/left = 70.0
 margin/top = 310.0
 margin/right = 290.0
 margin/bottom = 363.0
-text = "Fullscreen"
+text = "Window Mode"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -206,7 +206,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 12 )
+theme/theme = SubResource( 7 )
 margin/left = 70.0
 margin/top = 400.0
 margin/right = 320.0
@@ -222,7 +222,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 12 )
+theme/theme = SubResource( 7 )
 margin/left = 70.0
 margin/top = 490.0
 margin/right = 320.0
@@ -238,7 +238,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 16 )
+theme/theme = SubResource( 9 )
 margin/left = 359.0
 margin/top = 404.0
 margin/right = 429.0
@@ -254,7 +254,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 16 )
+theme/theme = SubResource( 9 )
 margin/left = 480.0
 margin/top = 480.0
 margin/right = 550.0
@@ -270,7 +270,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 16 )
+theme/theme = SubResource( 9 )
 margin/left = 480.0
 margin/top = 520.0
 margin/right = 550.0
@@ -286,7 +286,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 16 )
+theme/theme = SubResource( 9 )
 margin/left = 440.0
 margin/top = 480.0
 margin/right = 475.0
@@ -302,7 +302,7 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-theme/theme = SubResource( 16 )
+theme/theme = SubResource( 9 )
 margin/left = 440.0
 margin/top = 520.0
 margin/right = 475.0
@@ -318,7 +318,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 10 )
+theme/theme = SubResource( 11 )
 margin/left = 50.0
 margin/top = 590.0
 margin/right = 200.0
@@ -336,7 +336,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 10 )
+theme/theme = SubResource( 11 )
 margin/left = 240.0
 margin/top = 590.0
 margin/right = 390.0
@@ -354,7 +354,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 14 )
+theme/theme = SubResource( 13 )
 margin/left = 360.0
 margin/top = 220.0
 margin/right = 700.0
@@ -373,7 +373,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 14 )
+theme/theme = SubResource( 13 )
 margin/left = 360.0
 margin/top = 310.0
 margin/right = 700.0
