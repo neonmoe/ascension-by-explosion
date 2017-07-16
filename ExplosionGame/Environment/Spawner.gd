@@ -1,19 +1,26 @@
 extends Spatial
 
-export var enemies_count = 10
-export var enemy_spawn_rate_per_second = 0.3
+var enemies_per_wave = 4
+var enemies_per_second = 0.5
 var enemy = load("res://ExplosionGame/Environment/Enemy.tscn")
 var spawned = []
 
 var timer = 0
 var last_spawn_time = 0
+var state = 0
 
 func _ready():
 	set_process(true)
 
 func _process(delta):
 	timer += delta
-	if (timer - last_spawn_time > 1.0 / enemy_spawn_rate_per_second && spawned.size() < enemies_count):
+	if (state == 0 && timer > 1):
+		get_node("../SpawnGate").open()
+		state = 1
+	if (state == 1 && spawned.size() >= enemies_per_wave):
+		get_node("../SpawnGate").close()
+		state = 2
+	if (timer - last_spawn_time > 1.0 / enemies_per_second && spawned.size() < enemies_per_wave):
 		var spawn = enemy.instance()
 		var pos = Vector3(10, 0, 10) * (randf() * 2 - 1) + get_global_transform().origin
 		var player = get_node("/root/WorldRoot/Player/Body")

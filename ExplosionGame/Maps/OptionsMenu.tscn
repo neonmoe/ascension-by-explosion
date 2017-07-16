@@ -1,0 +1,462 @@
+[gd_scene load_steps=15 format=1]
+
+[ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="GDScript" id=8]
+
+script/source = "extends Node2D
+
+func _ready():
+	get_node(\"Resolutions\").add_item(\"1280x720\")
+	get_node(\"Resolutions\").add_item(\"1366x768\")
+	get_node(\"Resolutions\").add_item(\"1920x1080\")
+	get_node(\"Resolutions\").add_item(\"1280x800\")
+	get_node(\"Resolutions\").add_item(\"1680x1050\")
+	get_node(\"Resolutions\").add_item(\"1920x1200\")
+	get_node(\"Resolutions\").add_item(\"1024x768\")
+	get_node(\"Resolutions\").add_item(\"1280x1024\")
+	get_node(\"Resolutions\").select(Globals.get(\"resolution\"))
+	
+	get_node(\"Fullscreens\").add_item(\"Windowed\")
+	get_node(\"Fullscreens\").add_item(\"\\\"Fullscreen\\\"\")
+	get_node(\"Fullscreens\").select(Globals.get(\"fullscreenmode\"))
+	if (Globals.get(\"fullscreenmode\") == 1):
+		get_node(\"Resolutions\").set_disabled(true)
+	
+	get_node(\"FoV\").set_value(Globals.get(\"fov\"))
+	get_node(\"LabelFoV\").set_text(str(Globals.get(\"fov\")))
+	get_node(\"MSX\").set_value(Globals.get(\"msx\"))
+	get_node(\"LabelMSXValue\").set_text(str(Globals.get(\"msx\")))
+	get_node(\"MSY\").set_value(Globals.get(\"msy\"))
+	get_node(\"LabelMSYValue\").set_text(str(Globals.get(\"msy\")))
+
+func apply_changes():
+	var fullscreen = get_node(\"Fullscreens\").get_selected() == 1
+	var raw_resolution = get_node(\"Resolutions\").get_item_text(get_node(\"Resolutions\").get_selected())
+	var sizes = raw_resolution.split(\"x\")
+	var resolution = Vector2(sizes[0], sizes[1])
+	OS.set_borderless_window(fullscreen)
+	if (fullscreen):
+		OS.set_window_maximized(true)
+		get_node(\"Resolutions\").set_disabled(true)
+	else:
+		OS.set_window_maximized(false)
+		OS.set_window_size(resolution)
+		get_node(\"Resolutions\").set_disabled(false)
+	Globals.set(\"resolution\", get_node(\"Resolutions\").get_selected())
+	Globals.set(\"fullscreenmode\", get_node(\"Fullscreens\").get_selected())
+	Globals.set(\"fov\", get_node(\"FoV\").get_value())
+	Globals.set(\"msx\", get_node(\"MSX\").get_value())
+	Globals.set(\"msy\", get_node(\"MSY\").get_value())
+
+func _on_QuitButton_button_down():
+	apply_changes()
+	get_tree().change_scene(\"res://ExplosionGame/Maps/MainMenu.tscn\")
+
+func _on_ApplyButton_button_down():
+	apply_changes()
+
+func _on_FoV_value_changed(value):
+	get_node(\"LabelFoVValue\").set_text(str(value))
+
+func _on_MSX_value_changed(value):
+	get_node(\"LabelMSXValue\").set_text(str(value))
+
+func _on_MSY_value_changed(value):
+	get_node(\"LabelMSYValue\").set_text(str(value))
+"
+
+[sub_resource type="DynamicFont" id=2]
+
+font/size = 72
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=3]
+
+default_font = SubResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+
+font/size = 56
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=5]
+
+default_font = SubResource( 4 )
+
+[sub_resource type="DynamicFont" id=11]
+
+font/size = 40
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=12]
+
+default_font = SubResource( 11 )
+
+[sub_resource type="DynamicFont" id=15]
+
+font/size = 32
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=16]
+
+default_font = SubResource( 15 )
+
+[sub_resource type="DynamicFont" id=9]
+
+font/size = 56
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=10]
+
+default_font = SubResource( 9 )
+
+[sub_resource type="DynamicFont" id=13]
+
+font/size = 28
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 1 )
+
+[sub_resource type="Theme" id=14]
+
+default_font = SubResource( 13 )
+
+[node name="OptionsMenu" type="Node2D"]
+
+script/script = SubResource( 8 )
+
+[node name="Title" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 3 )
+margin/left = 40.0
+margin/top = 30.0
+margin/right = 867.0
+margin/bottom = 125.0
+text = "Ascension By Explosion"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Subtitle" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 5 )
+margin/left = 40.0
+margin/top = 100.0
+margin/right = 867.0
+margin/bottom = 195.0
+text = "- Options"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelResolution" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 12 )
+margin/left = 70.0
+margin/top = 220.0
+margin/right = 290.0
+margin/bottom = 273.0
+text = "Resolution"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelFullscreen" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 12 )
+margin/left = 70.0
+margin/top = 310.0
+margin/right = 290.0
+margin/bottom = 363.0
+text = "Fullscreen"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelFoV" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 12 )
+margin/left = 70.0
+margin/top = 400.0
+margin/right = 320.0
+margin/bottom = 453.0
+text = "Field of View"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelMS" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 12 )
+margin/left = 70.0
+margin/top = 490.0
+margin/right = 320.0
+margin/bottom = 543.0
+text = "Mouse Sensitivity"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelFoVValue" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 16 )
+margin/left = 359.0
+margin/top = 404.0
+margin/right = 429.0
+margin/bottom = 447.0
+text = "95"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelMSXValue" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 16 )
+margin/left = 480.0
+margin/top = 480.0
+margin/right = 550.0
+margin/bottom = 523.0
+text = "4.5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelMSYValue" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 16 )
+margin/left = 480.0
+margin/top = 520.0
+margin/right = 550.0
+margin/bottom = 563.0
+text = "4.5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelMSX" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 16 )
+margin/left = 440.0
+margin/top = 480.0
+margin/right = 475.0
+margin/bottom = 523.0
+text = "X:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelMSY" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 16 )
+margin/left = 440.0
+margin/top = 520.0
+margin/right = 475.0
+margin/bottom = 563.0
+text = "Y:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="QuitButton" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 10 )
+margin/left = 50.0
+margin/top = 590.0
+margin/right = 200.0
+margin/bottom = 670.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Back"
+flat = true
+align = 0
+
+[node name="ApplyButton" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 10 )
+margin/left = 240.0
+margin/top = 590.0
+margin/right = 390.0
+margin/bottom = 670.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Apply"
+flat = true
+align = 0
+
+[node name="Resolutions" type="OptionButton" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 14 )
+margin/left = 360.0
+margin/top = 220.0
+margin/right = 700.0
+margin/bottom = 270.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
+[node name="Fullscreens" type="OptionButton" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 14 )
+margin/left = 360.0
+margin/top = 310.0
+margin/right = 700.0
+margin/bottom = 360.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
+[node name="FoV" type="HSlider" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 421.0
+margin/top = 420.0
+margin/right = 700.0
+margin/bottom = 436.0
+range/min = 60.0
+range/max = 120.0
+range/step = 1.0
+range/page = 0.0
+range/value = 95.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="MSX" type="HSlider" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 530.0
+margin/top = 496.0
+margin/right = 700.0
+margin/bottom = 512.0
+range/min = 0.1
+range/max = 10.0
+range/step = 0.1
+range/page = 0.0
+range/value = 4.5
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="MSY" type="HSlider" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 530.0
+margin/top = 536.0
+margin/right = 700.0
+margin/bottom = 552.0
+range/min = 0.1
+range/max = 10.0
+range/step = 0.1
+range/page = 0.0
+range/value = 4.5
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[connection signal="button_down" from="QuitButton" to="." method="_on_QuitButton_button_down"]
+
+[connection signal="button_down" from="ApplyButton" to="." method="_on_ApplyButton_button_down"]
+
+[connection signal="value_changed" from="FoV" to="." method="_on_FoV_value_changed"]
+
+[connection signal="value_changed" from="MSX" to="." method="_on_MSX_value_changed"]
+
+[connection signal="value_changed" from="MSY" to="." method="_on_MSY_value_changed"]
+
+

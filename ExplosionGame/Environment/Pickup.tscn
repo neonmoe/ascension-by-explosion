@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://ExplosionGame/Environment/Pickup.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/FX/Explosion/Explosion.scn" type="PackedScene" id=2]
@@ -9,7 +9,11 @@ radius = 0.396729
 
 [sub_resource type="SphereShape" id=2]
 
-radius = 0.501457
+radius = 1.0
+
+[sub_resource type="SphereShape" id=3]
+
+radius = 6.1353
 
 [node name="Pickup" type="Spatial"]
 
@@ -30,9 +34,9 @@ shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
 mode = 0
-mass = 1.0
+mass = 5.0
 friction = 0.1
-bounce = 0.4
+bounce = 0.8
 gravity_scale = 1.0
 custom_integrator = false
 continuous_cd = false
@@ -87,6 +91,37 @@ shape = SubResource( 2 )
 trigger = true
 _update_shape_index = 0
 
+[node name="AttractionField" type="Area" parent="Body"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = false
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 3 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision/layers = 1
+collision/mask = 1
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/AttractionField"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 3 )
+trigger = false
+_update_shape_index = 0
+
 [connection signal="body_enter" from="Body/Area" to="." method="_on_body_enter"]
+
+[connection signal="body_enter" from="Body/AttractionField" to="." method="_on_AttractionField_body_enter"]
 
 

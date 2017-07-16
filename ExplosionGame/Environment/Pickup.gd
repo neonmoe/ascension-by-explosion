@@ -5,6 +5,15 @@ export var DAMAGE_PER_POINT = 1
 
 var health
 var damage
+var attracted_to = null
+
+func _ready():
+	set_fixed_process(true)
+
+func _fixed_process(delta):
+	if (attracted_to != null):
+		var direction = attracted_to.get_global_transform().origin - get_node("Body").get_global_transform().origin
+		get_node("Body").translate(direction.normalized() * 10 * delta)
 
 func init(hp, dmg):
 	var vel = 50
@@ -27,3 +36,8 @@ func _on_body_enter(body):
 		player.heal(health)
 		player.add_xp(damage)
 		queue_free()
+
+func _on_AttractionField_body_enter(body):
+	var player = body.get_parent()
+	if (player.get_name().find("Player") != -1):
+		attracted_to = body

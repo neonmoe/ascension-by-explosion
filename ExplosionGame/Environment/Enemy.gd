@@ -63,13 +63,14 @@ func construct():
 			var new_mat = FixedMaterial.new()
 			if (intelligence == 0):
 				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.2, 0.9, 0.8))
-				mesh.surface_set_material(2, new_mat)
 			if (intelligence == 1):
 				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.9, 0.3, 0.2))
-				mesh.surface_set_material(3, new_mat)
 			if (intelligence == 2):
 				new_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.6, 0.3, 0.9))
+			if (mobility == 0 || mobility == 2):
 				mesh.surface_set_material(2, new_mat)
+			if (mobility == 1):
+				mesh.surface_set_material(3, new_mat)
 	get_node("Body").add_child(spawn)
 
 func take_damage(dmg):
@@ -79,14 +80,17 @@ func take_damage(dmg):
 		death_anim_timer = DEATH_ANIM_LENGTH_IN_SECONDS
 
 func die():
-	get_node("/root/WorldRoot/Player").add_xp((1 + scale + mobility + intelligence) / 10.0)
 	var pos = get_node("Body").get_global_transform().origin
-	for i in range(0, intelligence * 3):
-		drop_pickup(pos, 1, 1)
-	for i in range(0, mobility * 3):
-		drop_pickup(pos, 0, 1)
-	for i in range(0, scale * 3):
-		drop_pickup(pos, 1, 0)
+	var num = floor(randf() * 3 + mobility + scale)
+	for i in range(0, num):
+		var hp = round(randf() * 0.75)
+		var xp = round(randf() * 0.75)
+		if (hp == 0 && xp == 0):
+			if (randf() < 0.5):
+				hp = 1
+			else:
+				xp = 1
+		drop_pickup(pos, hp, xp)
 
 func drop_pickup(pos, hp, dmg):
 	var spawn = pickup.instance()
@@ -145,4 +149,5 @@ func _on_damage_enter(body):
 		get_node("Body").apply_impulse(Vector3(), (movement * -1 + Vector3(0, 1, 0)) * 10)
 		if (intelligence == 1):
 			sleeping_time = CHARGER_SLEEP_SECONDS
+		get_node("Body/Player").play("Hurt")
 		player.take_damage(1 + scale)

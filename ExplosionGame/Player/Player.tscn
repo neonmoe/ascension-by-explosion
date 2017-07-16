@@ -1,12 +1,15 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=19 format=1]
 
 [ext_resource path="res://ExplosionGame/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://ExplosionGame/Player/Launcher/Launcher.scn" type="PackedScene" id=2]
 [ext_resource path="res://ExplosionGame/Player/Launcher/Shoot.wav" type="Sample" id=3]
-[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=4]
-[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=5]
+[ext_resource path="res://ExplosionGame/FX/Pickups/Health.wav" type="Sample" id=4]
+[ext_resource path="res://ExplosionGame/FX/Pickups/Powerup.wav" type="Sample" id=5]
 [ext_resource path="res://ExplosionGame/UI/DamageEmpty.png" type="Texture" id=6]
 [ext_resource path="res://ExplosionGame/UI/DamageFull.png" type="Texture" id=7]
+[ext_resource path="res://ExplosionGame/UI/HealthEmpty.png" type="Texture" id=8]
+[ext_resource path="res://ExplosionGame/UI/HealthFull.png" type="Texture" id=9]
+[ext_resource path="res://ExplosionGame/UI/RobotoSlab.ttf" type="DynamicFontData" id=10]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -59,8 +62,46 @@ samples/Shoot = {
 "sample": ExtResource( 3 )
 }
 
+[sub_resource type="SampleLibrary" id=12]
+
+samples/Health = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 4 )
+}
+samples/Powerup = {
+"db": 0.0,
+"pitch": 1.0,
+"priority": 0,
+"sample": ExtResource( 5 )
+}
+
+[sub_resource type="DynamicFont" id=10]
+
+font/size = 72
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 10 )
+
+[sub_resource type="Theme" id=11]
+
+default_font = SubResource( 10 )
+
+[sub_resource type="DynamicFont" id=7]
+
+font/size = 96
+font/use_mipmaps = true
+font/use_filter = true
+font/font = ExtResource( 10 )
+
+[sub_resource type="Theme" id=8]
+
+default_font = SubResource( 7 )
+
 [node name="Player" type="Spatial"]
 
+process/pause_mode = 2
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
 GRAVITY = 200
@@ -224,42 +265,168 @@ params/emission_cone/attenuation_db = -6.0
 config/polyphony = 1
 config/samples = SubResource( 3 )
 
-[node name="Health" type="Node2D" parent="."]
+[node name="FxPlayer" type="SpatialSamplePlayer" parent="Body/Camera"]
 
-editor/display_folded = true
-transform/pos = Vector2( 70, 660 )
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.03412, -0.644431 )
+params/volume_db = -8.0
+params/pitch_scale = 1.0
+params/attenuation/min_distance = 1.0
+params/attenuation/max_distance = 10.0
+params/attenuation/distance_exp = 1.0
+params/emission_cone/degrees = 180.0
+params/emission_cone/attenuation_db = -6.0
+config/polyphony = 5
+config/samples = SubResource( 12 )
 
-[node name="Empty" type="Sprite" parent="Health"]
+[node name="Damage" type="Control" parent="."]
 
-transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 4 )
-centered = false
-
-[node name="Full" type="Sprite" parent="Health"]
-
-transform/pos = Vector2( 0, -80 )
-texture = ExtResource( 5 )
-centered = false
-region = true
-region_rect = Rect2( 0, 0, 340, 80 )
-
-[node name="Damage" type="Node2D" parent="."]
-
-transform/pos = Vector2( 1210, 660 )
-transform/scale = Vector2( -1, 1 )
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 90.0
+margin/top = 80.0
+margin/right = 50.0
+margin/bottom = 40.0
 
 [node name="Empty" type="Sprite" parent="Damage"]
 
-transform/pos = Vector2( 0, -80 )
+transform/pos = Vector2( 20, -60 )
 texture = ExtResource( 6 )
 centered = false
 
 [node name="Full" type="Sprite" parent="Damage"]
 
-transform/pos = Vector2( 0, -80 )
+transform/pos = Vector2( 20, -60 )
 texture = ExtResource( 7 )
 centered = false
 region = true
 region_rect = Rect2( 0, 0, 40, 80 )
+
+[node name="Health" type="Control" parent="."]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 50.0
+margin/top = 80.0
+margin/right = 90.0
+margin/bottom = 40.0
+
+[node name="Empty" type="Sprite" parent="Health"]
+
+transform/pos = Vector2( 20, -60 )
+texture = ExtResource( 8 )
+centered = false
+
+[node name="Full" type="Sprite" parent="Health"]
+
+transform/pos = Vector2( 20, -60 )
+texture = ExtResource( 9 )
+centered = false
+region = true
+region_rect = Rect2( 0, 0, 340, 80 )
+
+[node name="GameOver" type="Control" parent="."]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 20.0
+margin/top = 20.0
+margin/right = -20.0
+margin/bottom = -20.0
+
+[node name="Panel" type="Panel" parent="GameOver"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -640.0
+margin/top = -360.0
+margin/right = -640.0
+margin/bottom = -360.0
+
+[node name="RespawnButton" type="Button" parent="GameOver"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 11 )
+margin/left = 230.0
+margin/top = 130.0
+margin/right = -230.0
+margin/bottom = 20.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Respawn"
+flat = true
+
+[node name="MainMenuButton" type="Button" parent="GameOver"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 11 )
+margin/left = 230.0
+margin/top = -20.0
+margin/right = -230.0
+margin/bottom = -130.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Main Menu"
+flat = true
+
+[node name="GameOverLabel" type="Label" parent="GameOver"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+theme/theme = SubResource( 8 )
+margin/left = 250.0
+margin/top = 320.0
+margin/right = -260.0
+margin/bottom = 193.0
+text = "Game Over"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[connection signal="button_down" from="GameOver/RespawnButton" to="." method="_on_RespawnButton_button_down"]
+
+[connection signal="button_down" from="GameOver/MainMenuButton" to="." method="_on_MainMenuButton_button_down"]
 
 
