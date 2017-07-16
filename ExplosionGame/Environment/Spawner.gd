@@ -56,4 +56,4 @@ func _process(delta):
 			if (int_points.size() > current_wave): enemies_points_intelligence = int_points[current_wave]
 	elif (time_until_wave > 0 && time_until_wave < 5):
 		get_node("../WaveStartLabel").set_hidden(false)
-		get_node("../WaveStartLabel").set_text("Wave starting in " + str(round(time_until_wave)) + "...")
+		get_node("../WaveStartLabel").set_text("Wave " + str(current_wave + 1) + " starting in " + str(round(time_until_wave)) + "...")
